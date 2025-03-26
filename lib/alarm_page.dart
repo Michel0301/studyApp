@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
@@ -10,10 +11,20 @@ class AlarmPage extends StatefulWidget {
 
 class _AlarmPageState extends State<AlarmPage> {
   final player = AudioPlayer();
+  late String motivationalMessage;
+
+  final List<String> messages = [
+    "Your mom was right, it's the damn phone!",
+    "Quit slacking—time to hit those books!",
+    "Hey, stop procrastinating and get to work!",
+    "No more excuses—your future self is waiting!"
+  ];
 
   @override
   void initState() {
     super.initState();
+    // Select a random funny motivational message.
+    motivationalMessage = messages[Random().nextInt(messages.length)];
     playAlarm();
   }
 
@@ -35,10 +46,10 @@ class _AlarmPageState extends State<AlarmPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '🚨 STOP PROCRASTINATING 🚨',
+            Text(
+              motivationalMessage,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,

@@ -78,7 +78,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
     final timeString = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     NotificationService().showNotification(
       id: 0,
-      title: isSession ? 'Study Session' : 'Break',
+      title: isSession ? 'Study session' : 'Break',
       body: 'Time Remaining: $timeString',
     );
   }
@@ -94,7 +94,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pomodoro Timer',
+          'Study timer',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
@@ -108,7 +108,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
         child: Column(
           children: [
             Text(
-              isSession ? 'Study Session' : 'Break',
+              isSession ? 'Study session' : 'Break',
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -141,7 +141,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
             ),
             const SizedBox(height: 30),
             const Text(
-              'Configure Timer',
+              'Configure timer',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
