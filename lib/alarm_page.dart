@@ -38,7 +38,7 @@ class _AlarmPageState extends State<AlarmPage> {
             const Text('🚨 STOP PROCRASTINATING 🚨',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                    fontSize: 26,
+                    fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: Colors.white)),
             const SizedBox(height: 20),
