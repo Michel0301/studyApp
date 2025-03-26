@@ -9,9 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  google_fonts: 2.3.1
   audioplayers: ^5.2.1
-
+  flutter_local_notifications: ^19.0.0
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +21,7 @@ flutter:
   assets:
     - assets/alarm.mp3
     - assets/studyBackground.jpg
+
+# (Optional) If the Linux plugin causes warnings, you can override it:
+dependency_overrides:
+  flutter_local_notifications_linux: ^6.0.0

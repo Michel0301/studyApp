@@ -18,7 +18,7 @@ class _AlarmPageState extends State<AlarmPage> {
   }
 
   void playAlarm() async {
-    await player.play(AssetSource('alarm.mp3')); // add alarm.mp3 to assets folder
+    await player.play(AssetSource('alarm.mp3'));
   }
 
   @override
@@ -35,12 +35,15 @@ class _AlarmPageState extends State<AlarmPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('🚨 STOP PROCRASTINATING 🚨',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 23,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white)),
+            const Text(
+              '🚨 STOP PROCRASTINATING 🚨',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -50,11 +53,15 @@ class _AlarmPageState extends State<AlarmPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
                 padding: const EdgeInsets.all(15),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
-              child: const Text('OK, I\'m studying!',
-                  style: TextStyle(color: Colors.white, fontSize: 18)),
-            )
+              child: const Text(
+                'OK, I\'m studying!',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
           ],
         ),
       ),

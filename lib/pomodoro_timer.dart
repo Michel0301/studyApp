@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'alarm_page.dart';
+import 'notification_service.dart';
 
 class PomodoroTimer extends StatefulWidget {
   const PomodoroTimer({super.key});
@@ -8,7 +10,7 @@ class PomodoroTimer extends StatefulWidget {
   State<PomodoroTimer> createState() => _PomodoroTimerState();
 }
 
-class _PomodoroTimerState extends State<PomodoroTimer> {
+class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserver {
   int sessionDuration = 25; // in minutes
   int breakDuration = 5; // in minutes
   bool isSession = true;
@@ -18,13 +20,34 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     resetTimer();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    NotificationService().cancelNotification(0);
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // When the app resumes and the timer hasn't finished, trigger the alarm.
+    if (state == AppLifecycleState.resumed && remainingSeconds > 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AlarmPage()),
+      );
+    }
   }
 
   void resetTimer() {
     setState(() {
       remainingSeconds = (isSession ? sessionDuration : breakDuration) * 60;
     });
+    updateNotification();
   }
 
   void startTimer() {
@@ -34,6 +57,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
         setState(() {
           remainingSeconds--;
         });
+        updateNotification();
       } else {
         setState(() {
           isSession = !isSession;
@@ -45,17 +69,23 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
 
   void stopTimer() {
     timer?.cancel();
+    NotificationService().cancelNotification(0);
   }
 
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
+  void updateNotification() {
+    final minutes = remainingSeconds ~/ 60;
+    final seconds = remainingSeconds % 60;
+    final timeString = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    NotificationService().showNotification(
+      id: 0,
+      title: isSession ? 'Study Session' : 'Break',
+      body: 'Time Remaining: $timeString',
+    );
   }
 
-  String get timeString {
-    int minutes = remainingSeconds ~/ 60;
-    int seconds = remainingSeconds % 60;
+  String get timeDisplay {
+    final minutes = remainingSeconds ~/ 60;
+    final seconds = remainingSeconds % 60;
     return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
@@ -83,7 +113,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> {
             ),
             const SizedBox(height: 20),
             Text(
-              timeString,
+              timeDisplay,
               style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),

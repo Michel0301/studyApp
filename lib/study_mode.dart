@@ -28,7 +28,9 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed && studyModeActive) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const AlarmPage()));
+        context,
+        MaterialPageRoute(builder: (context) => const AlarmPage()),
+      );
     }
   }
 
@@ -59,8 +61,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -86,8 +87,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding:
-                  const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -104,8 +104,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => const PomodoroTimer()),
+                    MaterialPageRoute(builder: (context) => const PomodoroTimer()),
                   );
                 },
               ),
