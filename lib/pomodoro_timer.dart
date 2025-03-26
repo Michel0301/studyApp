@@ -95,7 +95,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Pomodoro Timer',
+          'Study timer',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,

@@ -24,7 +24,7 @@ class NotificationService {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
       'pomodoro_channel',
-      'Pomodoro Timer',
+      'Study timer',
       channelDescription: 'Shows timer countdown on lockscreen',
       importance: Importance.max,
       priority: Priority.high,

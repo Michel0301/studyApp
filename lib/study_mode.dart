@@ -97,7 +97,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
                   backgroundColor: Colors.orangeAccent,
                 ),
                 child: const Text(
-                  'Pomodoro Timer',
+                  'Study timer',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
