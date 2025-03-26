@@ -40,7 +40,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '🔒🔒🔒        LOCK IN        🔒🔒🔒',
+          '🔒🔒🔒      LOCK IN      🔒🔒🔒',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,

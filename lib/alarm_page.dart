@@ -160,6 +160,14 @@ class _LockedScreenState extends State<LockedScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: const [
                 Text(
+                  'You made the alarm go off 3 times...',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
                   'PHONE LOCKED',
                   style: TextStyle(
                     fontSize: 35,
@@ -178,6 +186,15 @@ class _LockedScreenState extends State<LockedScreen> {
                 SizedBox(height: 20),
                 Text(
                   'Pay 0.001 BTC to the following\n address to unlock your phone',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'Eigen schuld maat',
                   style: TextStyle(
                     fontSize: 24,
                     fontStyle: FontStyle.italic,
