@@ -2,6 +2,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
+/// Tracks how many times the alarm has triggered.
+int _alarmTriggerCount = 0;
+bool get _isLocked => _alarmTriggerCount >= 3;
+
+void _alarmTriggered() {
+  _alarmTriggerCount++;
+}
+
+void _unlock() {
+  _alarmTriggerCount = 0;
+}
+
 class AlarmPage extends StatefulWidget {
   const AlarmPage({super.key});
 
@@ -16,14 +28,18 @@ class _AlarmPageState extends State<AlarmPage> {
   final List<String> messages = [
     "Your mom was right, it's the damn phone!",
     "Quit slacking—time to hit those books!",
-    "Hey, stop procrastinating and get to work!",
+    "Time to stop procrastinating and start studying!",
     "No more excuses—your future self is waiting!"
   ];
 
   @override
   void initState() {
     super.initState();
-    // Select a random funny motivational message.
+    // If we are not locked yet, increment the alarm count.
+    if (!_isLocked) {
+      _alarmTriggered();
+    }
+    // Pick a random funny message.
     motivationalMessage = messages[Random().nextInt(messages.length)];
     playAlarm();
   }
@@ -40,6 +56,11 @@ class _AlarmPageState extends State<AlarmPage> {
 
   @override
   Widget build(BuildContext context) {
+    // If locked, show the locked overlay.
+    if (_isLocked) {
+      return const LockedScreen();
+    }
+    // Otherwise, show normal alarm screen.
     return Scaffold(
       backgroundColor: Colors.redAccent,
       body: Center(
@@ -74,6 +95,79 @@ class _AlarmPageState extends State<AlarmPage> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class LockedScreen extends StatefulWidget {
+  const LockedScreen({super.key});
+
+  @override
+  State<LockedScreen> createState() => _LockedScreenState();
+}
+
+class _LockedScreenState extends State<LockedScreen> {
+  int tapCount = 0;
+  DateTime? firstTapTime;
+
+  void _handleTap() {
+    final now = DateTime.now();
+    if (firstTapTime == null ||
+        now.difference(firstTapTime!) > const Duration(seconds: 2)) {
+      // Reset if more than 2 seconds pass between taps.
+      firstTapTime = now;
+      tapCount = 1;
+    } else {
+      tapCount++;
+    }
+    if (tapCount >= 3) {
+      // Triple-tap detected => unlock.
+      _unlock();
+      Navigator.pop(context);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // Cover entire screen, preventing normal exit.
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: _handleTap,
+        behavior: HitTestBehavior.opaque,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                'LOCKED',
+                style: TextStyle(
+                  fontSize: 48,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Pay 0.001 BTC to unlock!',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                '3KXaSnjicY9gMfjMvbUkefw1Tz1MkPcRAr',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white70,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

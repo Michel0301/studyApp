@@ -34,7 +34,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // When the app resumes and the timer hasn't finished, trigger the alarm.
+    // If user resumes while timer is running, trigger alarm.
     if (state == AppLifecycleState.resumed && remainingSeconds > 0) {
       Navigator.push(
         context,
@@ -75,10 +75,11 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
   void updateNotification() {
     final minutes = remainingSeconds ~/ 60;
     final seconds = remainingSeconds % 60;
-    final timeString = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+    final timeString =
+        '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     NotificationService().showNotification(
       id: 0,
-      title: isSession ? 'Study session' : 'Break',
+      title: isSession ? 'Study Session' : 'Break',
       body: 'Time Remaining: $timeString',
     );
   }
@@ -94,7 +95,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Study timer',
+          'Pomodoro Timer',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
@@ -108,7 +109,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
         child: Column(
           children: [
             Text(
-              isSession ? 'Study session' : 'Break',
+              isSession ? 'Study Session' : 'Break',
               style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
@@ -141,7 +142,7 @@ class _PomodoroTimerState extends State<PomodoroTimer> with WidgetsBindingObserv
             ),
             const SizedBox(height: 30),
             const Text(
-              'Configure timer',
+              'Configure Timer',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),

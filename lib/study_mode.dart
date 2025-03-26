@@ -26,6 +26,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    // If study mode is active and the user resumes the app, trigger the alarm.
     if (state == AppLifecycleState.resumed && studyModeActive) {
       Navigator.push(
         context,
@@ -39,7 +40,7 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          '🔒🔒🔒      LOCK IN      🔒🔒🔒',
+          '🔒🔒🔒        LOCK IN        🔒🔒🔒',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
@@ -61,7 +62,8 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
             children: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -87,14 +89,15 @@ class _StudyModeState extends State<StudyMode> with WidgetsBindingObserver {
               const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
+                  padding:
+                  const EdgeInsets.symmetric(vertical: 15, horizontal: 30),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
                   backgroundColor: Colors.orangeAccent,
                 ),
                 child: const Text(
-                  'Study timer',
+                  'Pomodoro Timer',
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
